@@ -1,14 +1,18 @@
 package com.coffee.machine.controller;
 
 import com.coffee.machine.dto.RecipeDTO;
+import com.coffee.machine.exception.NotFoundException;
 import com.coffee.machine.model.Recipe;
 import com.coffee.machine.service.RecipeDtoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.crossstore.ChangeSetPersister;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/recipes")
@@ -23,25 +27,18 @@ public class RecipeController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Recipe> getById(@PathVariable Long id) {
-        return recipeService.findById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<?> getById(@PathVariable Long id) throws NotFoundException {
+        return ResponseEntity.ok(recipeService.findById(id));
     }
 
     @PostMapping
-    public Recipe create(@RequestBody RecipeDTO recipeDTO) {
-        return recipeService.create(recipeDTO);
+    public ResponseEntity<?> create(@RequestBody RecipeDTO recipeDTO) throws NotFoundException {
+        return ResponseEntity.ok(recipeService.create(recipeDTO));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Recipe> update(@PathVariable Long id, @RequestBody Recipe recipe) {
-        try {
-            Recipe updated = recipeService.update(id, recipe);
-            return ResponseEntity.ok(updated);
-        } catch (RuntimeException e) {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<Recipe> update(@PathVariable Long id, @RequestBody Recipe recipe) throws NotFoundException {
+        return ResponseEntity.ok(recipeService.update(id, recipe));
     }
 
     @DeleteMapping("/{id}")

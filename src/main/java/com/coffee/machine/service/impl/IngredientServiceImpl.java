@@ -1,5 +1,6 @@
 package com.coffee.machine.service.impl;
 
+import com.coffee.machine.exception.NotFoundException;
 import com.coffee.machine.model.Ingredient;
 import com.coffee.machine.repository.IngredientRepository;
 import com.coffee.machine.service.IngredientService;
@@ -26,7 +27,9 @@ public class IngredientServiceImpl implements IngredientService {
     }
 
     @Override
-    public Ingredient create(Ingredient ingredient) {
+    public Ingredient create(Ingredient ingredient) throws NotFoundException {
+        if (ingredientRepository.findByName(ingredient.getName()).isEmpty())
+            throw new NotFoundException("Ingredient not found");
         return ingredientRepository.save(ingredient);
     }
 

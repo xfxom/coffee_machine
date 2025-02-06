@@ -1,5 +1,6 @@
 package com.coffee.machine.controller;
 
+import com.coffee.machine.exception.NotFoundException;
 import com.coffee.machine.model.Ingredient;
 import com.coffee.machine.service.IngredientService;
 import lombok.RequiredArgsConstructor;
@@ -21,25 +22,18 @@ public class IngredientController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Ingredient> getById(@PathVariable Long id) {
-        return ingredientService.findById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<?> getById(@PathVariable Long id) {
+        return ResponseEntity.ok(ingredientService.findById(id));
     }
 
     @PostMapping
-    public Ingredient create(@RequestBody Ingredient ingredient) {
+    public Ingredient create(@RequestBody Ingredient ingredient) throws NotFoundException {
         return ingredientService.create(ingredient);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Ingredient> update(@PathVariable Long id, @RequestBody Ingredient ingredient) {
-        try {
-            Ingredient updated = ingredientService.update(id, ingredient);
-            return ResponseEntity.ok(updated);
-        } catch (RuntimeException e) {
-            return ResponseEntity.notFound().build();
-        }
+        return ResponseEntity.ok(ingredientService.update(id, ingredient));
     }
 
     @DeleteMapping("/{id}")

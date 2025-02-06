@@ -2,6 +2,7 @@ package com.coffee.machine.service.impl;
 
 import com.coffee.machine.dto.RecipeComponentDTO;
 import com.coffee.machine.dto.RecipeDTO;
+import com.coffee.machine.exception.NotFoundException;
 import com.coffee.machine.model.Ingredient;
 import com.coffee.machine.model.Recipe;
 import com.coffee.machine.model.RecipeComponent;
@@ -38,14 +39,14 @@ public class RecipeServiceImpl implements RecipeDtoService {
     }
 
     @Override
-    public Recipe update(Long id, Recipe updatedRecipe) {
+    public Recipe update(Long id, Recipe updatedRecipe) throws NotFoundException {
         return recipeRepository.findById(id)
                 .map(recipe -> {
                     recipe.setName(updatedRecipe.getName());
                     recipe.setComponents(updatedRecipe.getComponents());
                     return recipeRepository.save(recipe);
                 })
-                .orElseThrow(() -> new RuntimeException("Рецепт не найден"));
+                .orElseThrow(() -> new NotFoundException("Recipe not found"));
     }
 
     @Override
@@ -54,7 +55,7 @@ public class RecipeServiceImpl implements RecipeDtoService {
     }
 
     @Override
-    public Recipe create(RecipeDTO recipeDTO) {
+    public Recipe create(RecipeDTO recipeDTO) throws NotFoundException {
 
         Recipe recipe = new Recipe();
 
@@ -69,13 +70,13 @@ public class RecipeServiceImpl implements RecipeDtoService {
 
             if (recipeComponentDTO.getIngredientId() != null) {
                 Ingredient ingredient = ingredientService.findById(recipeComponentDTO.getIngredientId())
-                        .orElseThrow(() -> new RuntimeException("Ingredient not found: " + recipeComponentDTO.getIngredientId()));
+                        .orElseThrow(() -> new NotFoundException("Ingredient not found: " + recipeComponentDTO.getIngredientId()));
                 component.setIngredient(ingredient);
             }
 
             if (recipeComponentDTO.getSubRecipeId() != null) {
                 Recipe subRecipe = findById(recipeComponentDTO.getSubRecipeId())
-                        .orElseThrow(() -> new RuntimeException("Sub-recipe not found: " + recipeComponentDTO.getSubRecipeId()));
+                        .orElseThrow(() -> new NotFoundException("Sub-recipe not found: " + recipeComponentDTO.getSubRecipeId()));
                 component.setSubRecipe(subRecipe);
             }
 

@@ -14,7 +14,6 @@
 	<version>0.0.1</version>
 	<name>machine</name>
 	<description>API for coffee machine</description>
-	<url/>
 
 	<licenses>
 		<license/>
@@ -71,8 +70,8 @@
 
 		<dependency>
 			<groupId>org.springdoc</groupId>
-			<artifactId>springdoc-openapi-ui</artifactId>
-			<version>1.7.0</version>
+			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+			<version>2.3.0</version>
 		</dependency>
 
 	</dependencies>

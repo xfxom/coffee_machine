@@ -1,8 +1,10 @@
 package com.coffee.machine.controller;
 
+import com.coffee.machine.dto.RecipeDTO;
 import com.coffee.machine.model.Recipe;
-import com.coffee.machine.service.RecipeService;
+import com.coffee.machine.service.RecipeDtoService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,7 +15,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class RecipeController {
 
-    private final RecipeService recipeService;
+    private final RecipeDtoService recipeService;
 
     @GetMapping
     public List<Recipe> getAll() {
@@ -28,8 +30,8 @@ public class RecipeController {
     }
 
     @PostMapping
-    public Recipe create(@RequestBody Recipe recipe) {
-        return recipeService.create(recipe);
+    public Recipe create(@RequestBody RecipeDTO recipeDTO) {
+        return recipeService.create(recipeDTO);
     }
 
     @PutMapping("/{id}")

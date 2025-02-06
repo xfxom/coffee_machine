@@ -1,6 +1,7 @@
 package com.coffee.machine.controller;
 
 import com.coffee.machine.dto.RecipeDTO;
+import com.coffee.machine.exception.BadNumberException;
 import com.coffee.machine.exception.NotFoundException;
 import com.coffee.machine.model.Recipe;
 import com.coffee.machine.service.RecipeDtoService;
@@ -32,7 +33,7 @@ public class RecipeController {
     }
 
     @PostMapping
-    public ResponseEntity<?> create(@RequestBody RecipeDTO recipeDTO) throws NotFoundException {
+    public ResponseEntity<?> create(@RequestBody RecipeDTO recipeDTO) throws NotFoundException, BadNumberException {
         return ResponseEntity.ok(recipeService.create(recipeDTO));
     }
 

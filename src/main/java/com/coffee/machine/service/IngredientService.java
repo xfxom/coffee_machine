@@ -11,6 +11,6 @@ public interface IngredientService {
     List<Ingredient> findAll();
     Optional<Ingredient> findById(Long id);
     Ingredient create(Ingredient ingredient) throws NotFoundException;
-    Ingredient update(Long id, Ingredient ingredient);
+    Ingredient update(Long id, Ingredient ingredient) throws NotFoundException;
     void delete(Long id);
 }

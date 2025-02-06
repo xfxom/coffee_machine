@@ -32,7 +32,7 @@ public class IngredientController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Ingredient> update(@PathVariable Long id, @RequestBody Ingredient ingredient) {
+    public ResponseEntity<Ingredient> update(@PathVariable Long id, @RequestBody Ingredient ingredient) throws NotFoundException {
         return ResponseEntity.ok(ingredientService.update(id, ingredient));
     }
 

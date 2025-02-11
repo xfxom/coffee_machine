@@ -6,6 +6,7 @@ import com.coffee.machine.repository.IngredientRepository;
 import com.coffee.machine.service.IngredientService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.coyote.BadRequestException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -31,23 +32,26 @@ public class IngredientServiceImpl implements IngredientService {
     }
 
     @Override
-    public Ingredient create(Ingredient ingredient) throws NotFoundException {
+    public Ingredient create(Ingredient ingredient) throws NotFoundException, BadRequestException {
         log.info("Create ingredient with name: {}", ingredient.getName());
-        if (ingredientRepository.findByName(ingredient.getName()).isEmpty())
-            throw new NotFoundException("Ingredient not found");
+
+        if (ingredient.getName() == null || ingredient.getName().isEmpty())
+            throw new BadRequestException();
+
         return ingredientRepository.save(ingredient);
     }
 
     @Override
-    public Ingredient update(Long id, Ingredient updatedIngredient) {
+    public Ingredient update(Long id, Ingredient updatedIngredient) throws NotFoundException {
         log.info("Update ingredient with id: {}", id);
-        return ingredientRepository.findById(id)
-                .map(ingredient -> {
-                    ingredient.setName(updatedIngredient.getName());
-                    ingredient.setQuantity(updatedIngredient.getQuantity());
-                    return ingredientRepository.save(ingredient);
-                })
-                .orElseThrow(() -> new RuntimeException("Ингредиент не найден"));
+
+        Ingredient ingredient = ingredientRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Ingredient not found"));
+
+        ingredient.setName(updatedIngredient.getName());
+        ingredient.setQuantity(updatedIngredient.getQuantity());
+
+        return ingredientRepository.save(ingredient);
     }
 
     @Override

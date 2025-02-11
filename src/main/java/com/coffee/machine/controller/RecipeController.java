@@ -2,16 +2,16 @@ package com.coffee.machine.controller;
 
 import com.coffee.machine.dto.RecipeDTO;
 import com.coffee.machine.exception.BadNumberException;
+import com.coffee.machine.exception.NotEnoughException;
 import com.coffee.machine.exception.NotFoundException;
 import com.coffee.machine.model.Recipe;
-import com.coffee.machine.service.RecipeDtoService;
+import com.coffee.machine.service.RecipeProductionService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.crossstore.ChangeSetPersister;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
+import org.apache.coyote.BadRequestException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -20,7 +20,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class RecipeController {
 
-    private final RecipeDtoService recipeService;
+    private final RecipeProductionService recipeService;
 
     @GetMapping
     public List<Recipe> getAll() {
@@ -37,8 +37,13 @@ public class RecipeController {
         return ResponseEntity.ok(recipeService.create(recipeDTO));
     }
 
+    @PostMapping("/{id}/make")
+    public ResponseEntity<Map<String, BigDecimal>> makeDrink(@PathVariable Long id) throws BadNumberException, NotFoundException, NotEnoughException {
+        return ResponseEntity.ok(recipeService.makeDrink(id));
+    }
+
     @PutMapping("/{id}")
-    public ResponseEntity<Recipe> update(@PathVariable Long id, @RequestBody Recipe recipe) throws NotFoundException {
+    public ResponseEntity<Recipe> update(@PathVariable Long id, @RequestBody Recipe recipe) throws NotFoundException, BadRequestException {
         return ResponseEntity.ok(recipeService.update(id, recipe));
     }
 

@@ -4,6 +4,7 @@ import com.coffee.machine.exception.NotFoundException;
 import com.coffee.machine.model.Ingredient;
 import com.coffee.machine.service.IngredientService;
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.BadRequestException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,7 +28,7 @@ public class IngredientController {
     }
 
     @PostMapping
-    public Ingredient create(@RequestBody Ingredient ingredient) throws NotFoundException {
+    public Ingredient create(@RequestBody Ingredient ingredient) throws NotFoundException, BadRequestException {
         return ingredientService.create(ingredient);
     }
 

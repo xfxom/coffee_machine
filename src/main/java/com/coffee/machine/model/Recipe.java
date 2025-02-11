@@ -1,5 +1,6 @@
 package com.coffee.machine.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -40,6 +41,7 @@ public class Recipe {
     *   ]
     * }
     */
+    @JsonManagedReference
     @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<RecipeComponent> components;
 }

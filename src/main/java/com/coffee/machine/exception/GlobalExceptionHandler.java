@@ -13,11 +13,20 @@ import java.util.Map;
 @Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+
     @ExceptionHandler(Exception.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseBody
+    public Map<String, String> handleException(Exception e) {
+        log.error("Exception caught: {}", e.getMessage(), e);
+        return Map.of("error", e.getMessage());
+    }
+
+    @ExceptionHandler(NotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ResponseBody
-    public Map<String, String> handleRuntimeException(Exception e) {
-        log.error("Exception caught in GlobalExceptionHandler: {}", e.getMessage(), e);
+    public Map<String, String> handleNotFoundException(NotFoundException e) {
+        log.error("NotFoundException caught: {}", e.getMessage(), e);
         return Map.of("error", e.getMessage());
     }
 }

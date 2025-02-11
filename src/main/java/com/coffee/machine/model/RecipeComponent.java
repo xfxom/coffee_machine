@@ -1,5 +1,6 @@
 package com.coffee.machine.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -18,6 +19,7 @@ public class RecipeComponent {
     private Long id;
 
     @ManyToOne
+    @JsonBackReference
     @JoinColumn(name = "recipe_id", nullable = false)
     private Recipe recipe;
 

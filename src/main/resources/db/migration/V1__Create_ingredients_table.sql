@@ -1,0 +1,5 @@
+CREATE TABLE ingredients (
+  id SERIAL PRIMARY KEY,
+  name VARCHAR(50) NOT NULL UNIQUE,
+  quantity INT NOT NULL
+);

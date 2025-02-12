@@ -41,6 +41,7 @@ public class Recipe {
     *   ]
     * }
     */
+
     @JsonManagedReference
     @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<RecipeComponent> components;

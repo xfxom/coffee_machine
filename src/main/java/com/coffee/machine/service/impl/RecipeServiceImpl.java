@@ -9,6 +9,7 @@ import com.coffee.machine.model.Ingredient;
 import com.coffee.machine.model.Recipe;
 import com.coffee.machine.model.RecipeComponent;
 import com.coffee.machine.repository.RecipeRepository;
+import com.coffee.machine.service.BeverageStatisticService;
 import com.coffee.machine.service.IngredientService;
 import com.coffee.machine.service.RecipeProductionService;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +29,7 @@ public class RecipeServiceImpl implements RecipeProductionService {
 
     private final RecipeRepository recipeRepository;
     private final IngredientService ingredientService;
+    private final BeverageStatisticService beverageStatisticService;
 
     @Override
     public List<Recipe> findAll() {
@@ -59,9 +61,9 @@ public class RecipeServiceImpl implements RecipeProductionService {
             throw new NotFoundException("Recipe not found");
 
         Set<Long> visited = new HashSet<>();
-        if (detectCycle(updatedRecipe, visited)) {
+        if (detectCycle(updatedRecipe, visited))
             throw new BadRequestException("Cycle detected in recipe components");
-        }
+
 
         Recipe recipe = new Recipe();
 
@@ -172,6 +174,8 @@ public class RecipeServiceImpl implements RecipeProductionService {
             ing.setQuantity(ing.getQuantity() - req.intValue());
             ingredientService.update(entry.getKey().getId(), ing);
         }
+
+        beverageStatisticService.addToHistory(recipe);
 
         return required.entrySet()
                 .stream()

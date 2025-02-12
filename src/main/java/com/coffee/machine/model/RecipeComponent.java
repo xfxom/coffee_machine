@@ -18,6 +18,7 @@ public class RecipeComponent {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @ToString.Exclude
     @ManyToOne
     @JsonBackReference
     @JoinColumn(name = "recipe_id", nullable = false)

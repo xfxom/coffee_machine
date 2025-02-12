@@ -2,10 +2,7 @@ package com.coffee.machine.model;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.List;
 
@@ -42,6 +39,7 @@ public class Recipe {
     * }
     */
 
+    @ToString.Exclude
     @JsonManagedReference
     @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<RecipeComponent> components;

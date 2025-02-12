@@ -11,7 +11,7 @@ Coffee Machine API - это RESTful сервис для управления р�
 - Lombok
 - OpenAPI (Swagger)
 - Docker
-
+::wq;:
 ## Установка и запуск
 ### 1. Клонирование репозитория
 ```sh
